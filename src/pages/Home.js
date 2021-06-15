@@ -20,7 +20,7 @@ const Home = () => {
     dispatch(fetchAndSummarizeForecast(defaultZipCode));
   }, [dispatch]);
   //get data
-  const { zipcode, city, forecastAPIList, forecastByDate } = useSelector(
+  const { zipcode, city, forecastByDate } = useSelector(
     (state) => state.forecast
   );
   return (
@@ -32,14 +32,18 @@ const Home = () => {
       <div>
         {forecastByDate.map((forecast) => (
           <Forecast
+            key={forecast.date}
             date={forecast.date}
             time={forecast.time}
             weatherMain={forecast.weatherMain}
             weatherDesc={forecast.weatherDesc}
             icon={forecast.weatherIcon}
+            temp={forecast.temp}
             tempLow={forecast.tempLow}
             tempHigh={forecast.tempHigh}
             rain={forecast.rain}
+            rainChance={forecast.rainChance}
+            wind={forecast.wind}
           />
         ))}
       </div>

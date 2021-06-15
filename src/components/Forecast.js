@@ -8,22 +8,34 @@ const Forecast = ({
   weatherMain,
   weatherDesc,
   icon,
+  temp,
   tempLow,
   tempHigh,
   rain,
+  rainChance,
+  wind,
 }) => {
   const getWeather = (time, weatherMain, weatherDesc, icon) => {
     const weather = [];
     weatherMain.forEach((entry, i) => {
       var iconURL = "http://openweathermap.org/img/wn/" + icon[i] + "@2x.png";
       weather.push(
-        <StyledWeather>
+        <StyledWeather key={`weather-${i}`}>
           <p>
-            {time[i]}
+            <strong>{time[i]}</strong>
             <br />
-            {weatherDesc[i].charAt(0).toUpperCase() + weatherDesc[i].slice(1)}
           </p>
-          <img src={iconURL}></img>
+          <img src={iconURL} alt={weatherDesc}></img>
+          <br />
+          <p>
+            {weatherDesc[i].charAt(0).toUpperCase() + weatherDesc[i].slice(1)}
+            <br />
+            {temp[i]}°
+            <br />
+            {rainChance[i]}
+            <br />
+            {wind[i]}
+          </p>
         </StyledWeather>
       );
     });
@@ -35,7 +47,8 @@ const Forecast = ({
       <h3>
         {date}
         <br />
-        {Math.round(tempHigh)}° | {Math.round(tempLow)}°
+        {tempHigh}° | {tempLow}°{rain > 0 ? <br /> : ""}
+        {rain > 0 ? "💧 Rain Expected 💧" : ""}
       </h3>
       <div className="weatherDisplay">
         {getWeather(time, weatherMain, weatherDesc, icon)}
@@ -56,6 +69,7 @@ const StyledForecast = styled(motion.div)`
   h3 {
     text-align: center;
     margin: auto;
+    margin-bottom: 0.5rem;
   }
 
   .weatherDisplay {
@@ -63,6 +77,7 @@ const StyledForecast = styled(motion.div)`
     flex-direction: row;
     flex-wrap: wrap;
     width: 100%;
+    justify-content: center;
   }
 `;
 
@@ -71,8 +86,9 @@ const StyledWeather = styled(motion.div)`
   flex-direction: column;
   flex-wrap: wrap;
   justify-content: center;
-  vertical-align: center;
   width: 25%;
+  min-width: 150px;
+  margin-bottom: 0.5rem;
 
   p {
     margin-top: auto;
