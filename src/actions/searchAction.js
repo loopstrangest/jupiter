@@ -18,22 +18,53 @@ export const fetchAndSummarizeForecast = (zipcode) => async (dispatch) => {
     "18:00:00": "6pm",
     "21:00:00": "9pm",
   };
+  var dayMapping = [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday",
+  ];
+  var monthMapping = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
   //analyze each returned forecast data entry (one every three hours for five days)
   forecastAPIData.data.list.forEach((forecastEntry, index) => {
     currentDate = forecastEntry.dt_txt.substring(0, 10);
+    var dateObj = new Date(currentDate);
     var APITime = forecastEntry.dt_txt.substring(11, 19);
     var currentTime = timeMapping[APITime];
     //If the entry is for a new date, create a new entry in the forecastByDate list
     if (index === 0 || currentDate !== previousDate) {
       var newForecast = {
-        date: currentDate,
+        day: dayMapping[dateObj.getDay()],
+        date:
+          dateObj.toLocaleString("default", { month: "short" }) +
+          " " +
+          dateObj.getDate(),
         time: [currentTime],
-        temp: [Math.round(forecastEntry.main.temp)],
+        tempF: [Math.round(forecastEntry.main.temp)],
+        tempC: [Math.round(convertTemp(forecastEntry.main.temp))],
         weatherMain: [forecastEntry.weather[0].main],
         weatherDesc: [capitalizeText(forecastEntry.weather[0].description)],
         weatherIcon: [forecastEntry.weather[0].icon],
-        tempLow: Math.round(forecastEntry.main.temp),
-        tempHigh: Math.round(forecastEntry.main.temp),
+        tempLowF: Math.round(forecastEntry.main.temp),
+        tempHighF: Math.round(forecastEntry.main.temp),
+        tempLowC: Math.round(convertTemp(forecastEntry.main.temp)),
+        tempHighC: Math.round(convertTemp(forecastEntry.main.temp)),
         rain: "rain" in forecastEntry ? forecastEntry.rain["3h"] : 0,
         rainChance: ["💧 " + Math.round(forecastEntry.pop * 100) + "%"],
         wind: [
@@ -60,16 +91,27 @@ export const fetchAndSummarizeForecast = (zipcode) => async (dispatch) => {
         forecastEntry.weather[0].icon
       );
       //update temperature
-      forecastByDate[forecastByDate.length - 1].temp.push(
+      forecastByDate[forecastByDate.length - 1].tempF.push(
         Math.round(forecastEntry.main.temp)
       );
-      forecastByDate[forecastByDate.length - 1].tempLow = Math.min(
-        Math.round(forecastByDate[forecastByDate.length - 1].tempLow),
+      forecastByDate[forecastByDate.length - 1].tempLowF = Math.min(
+        Math.round(forecastByDate[forecastByDate.length - 1].tempLowF),
         Math.round(forecastEntry.main.temp)
       );
-      forecastByDate[forecastByDate.length - 1].tempHigh = Math.max(
-        Math.round(forecastByDate[forecastByDate.length - 1].tempHigh),
+      forecastByDate[forecastByDate.length - 1].tempHighF = Math.max(
+        Math.round(forecastByDate[forecastByDate.length - 1].tempHighF),
         Math.round(forecastEntry.main.temp)
+      );
+      forecastByDate[forecastByDate.length - 1].tempC.push(
+        Math.round(convertTemp(forecastEntry.main.temp))
+      );
+      forecastByDate[forecastByDate.length - 1].tempLowC = Math.min(
+        Math.round(forecastByDate[forecastByDate.length - 1].tempLowC),
+        Math.round(convertTemp(forecastEntry.main.temp))
+      );
+      forecastByDate[forecastByDate.length - 1].tempHighC = Math.max(
+        Math.round(forecastByDate[forecastByDate.length - 1].tempHighC),
+        Math.round(convertTemp(forecastEntry.main.temp))
       );
       //update rain
       if ("rain" in forecastEntry) {
@@ -100,6 +142,10 @@ export const fetchAndSummarizeForecast = (zipcode) => async (dispatch) => {
     },
   });
 };
+
+function convertTemp(temp) {
+  return ((temp - 32) * 5) / 9;
+}
 
 function degToCompass(deg) {
   var val = Math.round(deg / 22.5 + 0.5);

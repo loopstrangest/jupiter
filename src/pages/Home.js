@@ -5,7 +5,7 @@ import { fetchAndSummarizeForecast } from "../actions/searchAction";
 //components
 import Search from "../components/Search";
 import Location from "../components/Location";
-
+import TempToggle from "../components/TempToggle";
 import Forecast from "../components/Forecast";
 
 //styling and animation
@@ -25,6 +25,7 @@ const Home = () => {
   );
   return (
     <App>
+      <TempToggle />
       <h1>Jupiter</h1>
       <h3>Check the weather for your zip code</h3>
       <Search />
@@ -33,14 +34,18 @@ const Home = () => {
         {forecastByDate.map((forecast) => (
           <Forecast
             key={forecast.date}
+            day={forecast.day}
             date={forecast.date}
             time={forecast.time}
             weatherMain={forecast.weatherMain}
             weatherDesc={forecast.weatherDesc}
             icon={forecast.weatherIcon}
-            temp={forecast.temp}
-            tempLow={forecast.tempLow}
-            tempHigh={forecast.tempHigh}
+            tempF={forecast.tempF}
+            tempLowF={forecast.tempLowF}
+            tempHighF={forecast.tempHighF}
+            tempC={forecast.tempC}
+            tempLowC={forecast.tempLowC}
+            tempHighC={forecast.tempHighC}
             rain={forecast.rain}
             rainChance={forecast.rainChance}
             wind={forecast.wind}

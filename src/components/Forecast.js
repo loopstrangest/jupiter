@@ -1,20 +1,28 @@
+import { useDispatch, useSelector } from "react-redux";
 //styling and animation
 import styled from "styled-components";
 import { motion } from "framer-motion";
 
 const Forecast = ({
+  day,
   date,
   time,
   weatherMain,
   weatherDesc,
   icon,
-  temp,
-  tempLow,
-  tempHigh,
+  tempF,
+  tempLowF,
+  tempHighF,
+  tempC,
+  tempLowC,
+  tempHighC,
+
   rain,
   rainChance,
   wind,
 }) => {
+  const { tempUnit } = useSelector((state) => state.app);
+
   const getWeather = (time, weatherMain, weatherDesc, icon) => {
     const weather = [];
     weatherMain.forEach((entry, i) => {
@@ -30,7 +38,7 @@ const Forecast = ({
           <p>
             {weatherDesc[i].charAt(0).toUpperCase() + weatherDesc[i].slice(1)}
             <br />
-            {temp[i]}°
+            {tempUnit == "°F" ? tempF[i] + "°" : tempC[i] + "°"}
             <br />
             {rainChance[i]}
             <br />
@@ -45,9 +53,14 @@ const Forecast = ({
   return (
     <StyledForecast>
       <h3>
+        {day}
+        <br />
         {date}
         <br />
-        {tempHigh}° | {tempLow}°{rain > 0 ? <br /> : ""}
+        {tempUnit == "°F"
+          ? tempHighF + "° | " + tempLowF + "°"
+          : tempHighC + "° | " + tempLowC + "°"}
+        {rain > 0 ? <br /> : ""}
         {rain > 0 ? "💧 Rain Expected 💧" : ""}
       </h3>
       <div className="weatherDisplay">
@@ -60,11 +73,16 @@ const Forecast = ({
 const StyledForecast = styled(motion.div)`
   align-items: center;
   margin: auto;
-  border: 1px solid black;
-  margin-bottom: 1rem;
+  border-bottom: 2px solid black;
+  :last-child {
+    border-bottom: none;
+  }
+  margin-bottom: 0.5rem;
+  margin-top: 0.5rem;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
+  width: 95%;
 
   h3 {
     text-align: center;
@@ -82,12 +100,15 @@ const StyledForecast = styled(motion.div)`
 `;
 
 const StyledWeather = styled(motion.div)`
+  border: 1px solid black;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
   justify-content: center;
-  width: 25%;
+  width: 23%;
   min-width: 150px;
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
   margin-bottom: 0.5rem;
 
   p {

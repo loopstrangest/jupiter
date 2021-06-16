@@ -11,10 +11,10 @@ import { motion } from "framer-motion";
 const Search = () => {
   const dispatch = useDispatch();
   useEffect(() => {
-    window.addEventListener("keydown", function (e) {
+    document.addEventListener("keyup", function (e) {
       if (e.key === "Enter") {
         getSearchResults();
-        //e.preventDefault();
+        e.preventDefault();
       }
     });
   });
@@ -33,8 +33,6 @@ const Search = () => {
       }, 300);
       return;
     }
-    dispatch(fetchAndSummarizeForecast(zipCode));
-    zipCodeSearch.value = "";
   }
 
   return (
