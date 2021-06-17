@@ -33,7 +33,7 @@ const StyledTempToggle = styled(motion.div)`
   p {
     width: 20px;
     margin: auto;
-    margin-right: 0.55rem;
+    margin-right: 0.33rem;
   }
 
   .switch {
@@ -60,6 +60,7 @@ const StyledTempToggle = styled(motion.div)`
     background-color: #e1ffa1;
     -webkit-transition: 0.4s;
     transition: 0.4s;
+    border: 1px solid black;
   }
 
   .slider:before {
@@ -68,7 +69,7 @@ const StyledTempToggle = styled(motion.div)`
     height: 20px;
     width: 20px;
     left: 5px;
-    bottom: 4px;
+    bottom: 3.5px;
     background-color: black;
     -webkit-transition: 0.4s;
     transition: 0.4s;

@@ -1,15 +1,18 @@
 //redux and routes
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { fetchAndSummarizeForecast } from "../actions/searchAction";
 import axios from "axios";
 import { forecastURL } from "../api";
+import { fetchAndSummarizeForecast } from "../actions/searchAction";
+
 //styling and animation
 import styled from "styled-components";
 import { motion } from "framer-motion";
 
 const Search = () => {
   const dispatch = useDispatch();
+
+  //try to fetch forecast on enter keyup
   useEffect(() => {
     document.addEventListener("keyup", function (e) {
       if (e.key === "Enter") {
@@ -20,19 +23,22 @@ const Search = () => {
   });
 
   async function getSearchResults() {
+    //get inputted zip code
     var zipCodeSearch = document.getElementById("zipCodeSearch");
     var zipCode = zipCodeSearch.value;
-    console.log("zip is", zipCode);
     try {
       const forecastAPIData = await axios.get(forecastURL(zipCode));
     } catch (err) {
       zipCodeSearch.value = "";
+      //show invalid zip code visual
       zipCodeSearch.classList.add("error");
       setTimeout(function () {
         zipCodeSearch.classList.remove("error");
       }, 300);
       return;
     }
+    dispatch(fetchAndSummarizeForecast(zipCode));
+    zipCodeSearch.value = "";
   }
 
   return (
@@ -57,10 +63,10 @@ const StyledSearch = styled(motion.div)`
   }
 
   #zipCodeSearch {
-    border: none;
+    border: 1px solid black;
+    border-radius: 5px;
     color: black;
-    background: rgba(0, 0, 0, 0.1);
-    border-radius: 0.3rem;
+    background: white;
     margin: auto;
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
@@ -85,8 +91,16 @@ const StyledSearch = styled(motion.div)`
 
   #searchButton {
     cursor: pointer;
-    padding-left: 0.25rem;
-    padding-right: 0.25rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    background-color: #e1ffa1;
+    border: 1px solid black;
+    border-radius: 10px;
+  }
+
+  #searchButton:hover {
+    box-shadow: 0px -4px 2px #e1ffa1, 0px 4px 2px #e1ffa1, -4px 0px 2px #e1ffa1,
+      4px 0px 2px #e1ffa1;
   }
 `;
 

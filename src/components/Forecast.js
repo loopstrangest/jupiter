@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 //styling and animation
 import styled from "styled-components";
 import { motion } from "framer-motion";
@@ -16,13 +16,13 @@ const Forecast = ({
   tempC,
   tempLowC,
   tempHighC,
-
   rain,
   rainChance,
   wind,
 }) => {
   const { tempUnit } = useSelector((state) => state.app);
 
+  //Create and populate weather elements for each forecast date
   const getWeather = (time, weatherMain, weatherDesc, icon) => {
     const weather = [];
     weatherMain.forEach((entry, i) => {
@@ -38,7 +38,7 @@ const Forecast = ({
           <p>
             {weatherDesc[i].charAt(0).toUpperCase() + weatherDesc[i].slice(1)}
             <br />
-            {tempUnit == "°F" ? tempF[i] + "°" : tempC[i] + "°"}
+            {tempUnit === "°F" ? tempF[i] + "°" : tempC[i] + "°"}
             <br />
             {rainChance[i]}
             <br />
@@ -57,7 +57,7 @@ const Forecast = ({
         <br />
         {date}
         <br />
-        {tempUnit == "°F"
+        {tempUnit === "°F"
           ? tempHighF + "° | " + tempLowF + "°"
           : tempHighC + "° | " + tempLowC + "°"}
         {rain > 0 ? <br /> : ""}
@@ -73,16 +73,17 @@ const Forecast = ({
 const StyledForecast = styled(motion.div)`
   align-items: center;
   margin: auto;
-  border-bottom: 2px solid black;
+  margin-bottom: 0.25rem;
+  border-bottom: 3px solid black;
   :last-child {
     border-bottom: none;
+    margin-bottom: 1rem;
   }
-  margin-bottom: 0.5rem;
-  margin-top: 0.5rem;
+
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  width: 95%;
+  width: 96%;
 
   h3 {
     text-align: center;
@@ -101,12 +102,14 @@ const StyledForecast = styled(motion.div)`
 
 const StyledWeather = styled(motion.div)`
   border: 1px solid black;
+  border-radius: 10px;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
   justify-content: center;
-  width: 23%;
-  min-width: 150px;
+  width: 24%;
+  min-width: 160px;
+  max-width: 200px;
   margin-left: 0.25rem;
   margin-right: 0.25rem;
   margin-bottom: 0.5rem;
@@ -116,6 +119,8 @@ const StyledWeather = styled(motion.div)`
     margin-bottom: auto;
     word-wrap: normal;
     text-align: center;
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
   }
 
   img {

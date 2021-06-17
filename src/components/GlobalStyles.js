@@ -21,7 +21,6 @@ body{
 h1{
     text-align: center;
     font-size: 3rem;
-    padding-top: 1rem;
 }
 h2{
     font-size: 2rem;

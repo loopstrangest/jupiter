@@ -6,7 +6,7 @@ const Location = ({ zip, city }) => {
   return (
     <StyledLocation>
       <p>
-        Forecast for ZIP Code {zip}, city of {city}
+        Forecast for zip code {zip}, city of {city}:
       </p>
     </StyledLocation>
   );
@@ -22,6 +22,8 @@ const StyledLocation = styled(motion.div)`
   p {
     margin: auto;
     text-align: center;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
   }
 `;
 
