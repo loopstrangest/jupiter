@@ -2,6 +2,15 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## OpenWeather API Key Required
+
+An API key from OpenWeather is needed to retrieve the data this project uses.
+
+1. Sign up for an OpenWeather account for free at https://home.openweathermap.org/users/sign_up
+2. Get an API key and add a .env file to the project directory with the following environment variables:
+   REACT_APP_API_KEY=replace_with_your_key
+   BROWSER=none
+
 ## Installation Required
 
 In the project directory, to install all of the required dependencies, run:
