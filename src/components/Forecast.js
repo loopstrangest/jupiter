@@ -34,7 +34,6 @@ const Forecast = ({
             <br />
           </p>
           <img src={iconURL} alt={weatherDesc}></img>
-          <br />
           <p>
             {weatherDesc[i].charAt(0).toUpperCase() + weatherDesc[i].slice(1)}
             <br />
